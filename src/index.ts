@@ -1,50 +1,66 @@
 import * as http from 'http';
 import * as debug from 'debug';
+import * as express from 'express';
 
 import App from './App';
-
 debug('ts-express:server');
 
-const port = normalizePort(process.env.PORT || 3000);
-App.set('port', port);
+class TypedServer{
 
-const server = http.createServer(App);
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+    private app: express.Application;
+    private server: http.Server;
+    private port: number | string | boolean;
 
-function normalizePort(val: number|string): number|string|boolean {
-  let port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
-  if(isNaN(port)){
-    return val;
-  }else if( port >= 0){
-    return port;
-  }else{
-    return false;
-  }
+    constructor(){
+        this.app = App.express;
+        const norm_port = this.init_port(this.app);
+        this.port = norm_port;
+        const app_server = this.init_server(norm_port);
+        this.server = app_server;
+    }
+
+    private init_port(app: express.Application): number | string | boolean{
+        const norm_port = this.normalizePort(process.env.PORT || 3000);
+        app.set('port', norm_port);
+        return norm_port;
+    }
+
+    private init_server(port: number | string | boolean): http.Server{
+        const app_server: http.Server = App.server;
+        app_server.listen(port);
+        app_server.on('error', this.on_error);
+        return app_server;
+    }
+
+    private normalizePort(val: number | string): number | string | boolean {
+        let norm_port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
+        if (isNaN(norm_port)) {
+            return val;
+        } else if (norm_port >= 0) {
+            return norm_port;
+        } else {
+            return false;
+        }
+    }
+
+    private on_error(error: NodeJS.ErrnoException): void {
+        if (error.syscall !== 'listen') {
+            throw error;
+        }
+        let bind: string = (typeof this.port === 'string') ? 'Pipe ' + this.port : 'Port' + this.port;
+        switch (error.code) {
+            case 'EACCES':
+                console.error(`${bind} requires elevated priveleges`);
+                process.exit(1);
+                break;
+            case 'EADDRINUSE':
+                console.error(`${bind} is already in use`);
+                process.exit(1);
+                break;
+            default:
+                throw error;
+        }
+    }
 }
 
-function onError(error: NodeJS.ErrnoException): void {
-  if(error.syscall !== 'listen'){
-    throw error;
-  }
-  let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port' + port;
-  switch(error.code){
-    case 'EACCES':
-      console.error(`${bind} requires elevated priveleges`);
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(`${bind} is already in use`);
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-
-function onListening():void {
-  let addr = server.address();
-  let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
-}
+new TypedServer();
