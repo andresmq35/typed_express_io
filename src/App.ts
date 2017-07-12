@@ -2,10 +2,12 @@ import * as path from 'path';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as body_parser from 'body-parser';
-import request = require('request');
 import socketio = require('socket.io');
 import * as http from 'http';
 
+/**
+ * @desc A lightweight microservice framework using typescript, express, and socketio
+ */
 class App {
 
     public express: express.Application;
@@ -27,20 +29,37 @@ class App {
         this.express.use(body_parser.urlencoded({ extended: false }));
     }
 
+    /**
+     * @desc The routes for the application. We can use rest naming to create api's, or deliver static files
+     *       as in the example / route. 
+     */
     private routes(): void {
 
         let router: express.Router = express.Router();
 
+        /**
+         * @desc The base route to get the test file
+         */
         router.get('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            // res.json({
-            //     message: 'Hello World!'
-            // });
             res.sendFile(__dirname + '/socket-test.html');
+        });
+
+        /**
+         * @desc An example of a rest route to get an order by id
+         */
+        router.get('/order/:id', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+            const reqID = req.query.id;
+            res.json({
+                "message": "Here is your order with id: " +  reqID
+            });
         });
 
         this.express.use('/', router);
     }
     
+    /**
+     * @desc An example socket listener 
+     */
     private sockets_listen(): void{
         this.io.on('connection', (socket)=> {
             socket.emit('news', {"hello": "world!"});
