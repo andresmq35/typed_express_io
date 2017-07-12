@@ -19,12 +19,21 @@ class TypedServer{
         this.server = app_server;
     }
 
+    /**
+     * @desc Initialize the port for the service to use the environment variable PORT.
+     *       If it does not exist, use port 3000
+     * @param app The express application
+     */
     private init_port(app: express.Application): number | string | boolean{
         const norm_port = this.normalizePort(process.env.PORT || 3000);
         app.set('port', norm_port);
         return norm_port;
     }
 
+    /**
+     * @desc Intialize an express server. Setup port listeners and error listeners
+     * @param port The port to run the express application on
+     */
     private init_server(port: number | string | boolean): http.Server{
         const app_server: http.Server = App.server;
         app_server.listen(port);
@@ -32,6 +41,11 @@ class TypedServer{
         return app_server;
     }
 
+    /**
+     * @desc A helper method to convert a string port to a numeric, integer port.
+     *       If the port is false, then likely there is no env set and it will default to 3000
+     * @param val The value of the port to normalize
+     */
     private normalizePort(val: number | string): number | string | boolean {
         let norm_port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
         if (isNaN(norm_port)) {
@@ -43,6 +57,11 @@ class TypedServer{
         }
     }
 
+    /**
+     * @desc The error listener for the application. Will exit out of the application on unhandled error.
+     *       Probably should refactor to handle errors without exiting the process
+     * @param error The node js error to report
+     */
     private on_error(error: NodeJS.ErrnoException): void {
         if (error.syscall !== 'listen') {
             throw error;
