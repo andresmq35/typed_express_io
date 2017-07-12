@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec --compilers ts:ts-node/register test/**/*.test.ts",
-    "build": "tsc",
+    "build": "tsc && cp ./views/* ./dist",
     "start": "node dist/index.js",
     "clean": "rm -rf node_modules && rm -rf dist",
     "cleanInstall": "npm run-script clean && npm install && npm run-script build"
