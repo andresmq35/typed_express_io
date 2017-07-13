@@ -16,10 +16,10 @@ describe('baseRoute', () => {
             });
     });
 
-    it('should have a message that says Hello World!', () =>{
-        chai.request(app.server).get('/')
+    it('should response with a json message!', () =>{
+        chai.request(app.server).get('/orders/2')
             .then(res => {
-                expect(res.body.message).to.eql('Hello World!');
+                expect(res.type).to.eql('application/json');
             });
     });
     

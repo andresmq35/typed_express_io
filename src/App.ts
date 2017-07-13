@@ -17,10 +17,10 @@ class App {
     constructor() {
         this.express = express();
         this.server = http.createServer(this.express);
-        this.io = socketio(this.server);
+        this.io = socketio(this.server, {"path": "/socket"});
         this.middleware();
         this.routes();
-        this.sockets_listen();
+        this.socketsListen();
     }
 
     private middleware(): void {
@@ -47,10 +47,10 @@ class App {
         /**
          * @desc An example of a rest route to get an order by id
          */
-        router.get('/order/:id', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            const reqID = req.query.id;
+        router.get('/orders/:id', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+            const reqID = req.params.id;
             res.json({
-                "message": "Here is your order with id: " +  reqID
+                "message": "Here is your order with id:" + reqID
             });
         });
 
@@ -60,7 +60,7 @@ class App {
     /**
      * @desc An example socket listener 
      */
-    private sockets_listen(): void{
+    private socketsListen(): void{
         this.io.on('connection', (socket)=> {
             socket.emit('news', {"hello": "world!"});
             socket.on('sweet.data', (data)=>{

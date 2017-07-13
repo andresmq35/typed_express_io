@@ -1,16 +1,18 @@
 {
-  "name": "typed_express",
-  "version": "1.0.0",
+  "name": "typed_express_io",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha dist/test/*.js",
     "build": "tsc && cp ./views/* ./dist/src",
     "start": "node dist/src/index.js",
-    "clean": "rm -rf node_modules && rm -rf dist",
+    "cleanAll": "rm -rf node_modules && rm -rf dist",
+    "clean": "rm -rf dist",
     "cleanInstall": "npm run clean && npm install && npm run build",
     "all": "npm run clean && npm install && npm run build && npm test",
-    "buildAndTest": "npm run build && npm test"
+    "buildAndTest": "npm run build && npm test",
+    "cleanBuild": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "mocha": "^3.4.2",
+    "socket.io-client": "^2.0.3",
     "ts-node": "^1.6.1",
     "typescript": "^2.1.4"
   },
@@ -41,6 +44,6 @@
     "express": "^4.14.0",
     "morgan": "^1.7.0",
     "request": "^2.79.0",
-    "socket.io": "^1.7.2"
+    "socket.io": "^2.0.3"
   }
 }

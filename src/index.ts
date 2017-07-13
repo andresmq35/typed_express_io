@@ -17,6 +17,7 @@ class TypedServer{
         this.port = norm_port;
         const app_server = this.init_server(norm_port);
         this.server = app_server;
+        console.log("process pid is: " + process.pid);
     }
 
     /**
