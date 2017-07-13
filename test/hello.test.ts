@@ -16,7 +16,7 @@ describe('baseRoute', () => {
             });
     });
 
-    it('should response with a json message!', () =>{
+    it('should respond with a json message!', () =>{
         chai.request(app.server).get('/orders/2')
             .then(res => {
                 expect(res.type).to.eql('application/json');
