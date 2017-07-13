@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec --compilers ts:ts-node/register test/**/*.test.ts",
-    "build": "tsc && cp ./views/* ./dist",
-    "start": "node dist/index.js",
+    "test": "mocha dist/test/*.js",
+    "build": "tsc && cp ./views/* ./dist/src",
+    "start": "node dist/src/index.js",
     "clean": "rm -rf node_modules && rm -rf dist",
-    "cleanInstall": "npm run-script clean && npm install && npm run-script build"
-  },"repository": {
-    "type" : "git",
-    "url" : "https://github.com/andresmq35/typed_express_io"
+    "cleanInstall": "npm run clean && npm install && npm run build",
+    "all": "npm run clean && npm install && npm run build && npm test",
+    "buildAndTest": "npm run build && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andresmq35/typed_express_io"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +30,7 @@
     "@types/node": "^6.0.46",
     "@types/socket.io": "^1.4.27",
     "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "mocha": "^3.4.2",
     "ts-node": "^1.6.1",
     "typescript": "^2.1.4"
