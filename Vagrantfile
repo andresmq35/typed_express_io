@@ -66,18 +66,6 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-      cd /vagrant
-      sudo curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
-      yum -y install nodejs
-      yum groupinstall 'Development Tools'
-      npm run-script cleanAll
-      echo "Running npm install"
-      npm install
-      sudo npm install -g typescript
-      sudo npm install -g mocha      
-      npm run-script build
-      npm start
-      npm test
-  SHELL
+  config.vm.provision :shell, path: "provision/init.sh"
+  config.vm.provision :shell, path: "provision/startup.sh", run: "always"
 end
