@@ -9,10 +9,10 @@
     "start": "node dist/src/index.js",
     "cleanAll": "rm -rf node_modules && rm -rf dist",
     "clean": "rm -rf dist",
-    "cleanInstall": "npm run clean && npm install && npm run build",
-    "all": "npm run clean && npm install && npm run build && npm test",
-    "buildAndTest": "npm run build && npm test",
-    "cleanBuild": "npm run clean && npm run build"
+    "cleanInstall": "npm run-script clean && npm install && npm run-script build",
+    "all": "npm run-script clean && npm install && npm run-script build && npm test",
+    "buildAndTest": "npm run-script build && npm test",
+    "cleanBuild": "npm run-script clean && npm run-script build"
   },
   "repository": {
     "type": "git",
