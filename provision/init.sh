@@ -7,4 +7,5 @@ echo "Running npm install"
 npm install
 sudo npm install -g typescript
 sudo npm install -g mocha      
+sudo npm install -g pm2
 npm run-script build
